@@ -2,7 +2,7 @@
 /*
 Plugin name: Wooniversity Tools
 Plugin URI: wooniversity
-Description: Break you own website (and learn to fix it again)
+Description: Break your own website (and learn to fix it again)
 Author: nicw
 Version: Beta
 Author URI:
