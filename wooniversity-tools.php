@@ -23,6 +23,19 @@ if ( is_admin() ) {
 }
 
 /**
+ * Load scenarios
+ * todo autoload new scenarios
+ */
+if ( is_admin() ) {
+    /*
+     * $dir = plugin_dir_path( __FILE__ ) . 'scenarios';
+     * $scenarios = list_files( $dir, 1, array('index.php') );
+     * etc for autoload
+     */
+	require_once plugin_dir_path( __FILE__ ) . '/scenarios/woocommerce-shipping-usps/class-usps.php';
+}
+
+/**
  * Class Wooniversity_Tools
  * @package Wooni
  */
@@ -32,6 +45,12 @@ class Wooniversity_Tools {
 	 * Version is a habit
 	 */
 	public $version = '1';
+
+	/**
+     * todo move to invidual scenarios
+	 * Plugin scenarios
+	 */
+    private $wooni_plugins = array();
 
 	protected static $instance = null;
 
@@ -48,6 +67,8 @@ class Wooniversity_Tools {
 	}
 
 	public function __construct() {
+
+	    $this->wooni_plugins = apply_filters('add_wooni_plugins', $this->wooni_plugins );
 
 		add_action( 'admin_menu', array( 'Wooni\Menu', 'init' ) );
 		add_action( 'admin_notices', array( $this, 'check_plugins' ) );
@@ -76,13 +97,16 @@ class Wooniversity_Tools {
 			<p>Your are running Wooniversity Tools. Remember to deactivate when you are finished</p>
 		</div>
 
-		<?php if ( ! is_plugin_active( 'woocommerce-shipping-usps/woocommerce-shipping-usps.php' ) ): ?>
+        <?php foreach( $this->wooni_plugins as $plugin ): ?>
 
-			<div class="notice notice-error error-alt">
-				<p>Wooniversity Tools: To complete the USPS Shipping troubleshooting section, activate the USPS Shipping extension.</p>
-			</div>
+			<?php if ( ! is_plugin_active( $plugin['folder'] . '/' . $plugin['file'] ) ): ?>
 
-		<?php endif;
+                <div class="notice notice-error error-alt">
+                    <p>Wooniversity Tools: <?php echo $plugin['message']; ?></p>
+                </div>
+
+			<?php endif;
+        endforeach;
 
 	}
 
