@@ -38,23 +38,21 @@ class Menu {
 	 */
 	public function add_menu_page(){
 
-		add_submenu_page(
-			'options-general.php',
+		add_menu_page(
 			'Wooniversity Tools',
 			'Wooniversity Tools',
 			'manage_options',
-			'wooniversity-tools',
+			'wooniversity-tools.php',
 			array(
 				$this,
-				'render_page',
-				array(
-					'wooniversity-tools'
-				)
-			)
+				'render_menu_page',
+			),
+			'dashicons-admin-tools',
+			1
 		);
 	}
 
-	/*
+	/**
 	* Add the page to the tools menu
 	*/
 	public function add_shipping_submenu_page() {
@@ -67,12 +65,24 @@ class Menu {
 			'wooniversity-tools-shipping',
 			array(
 				$this,
-				'render_page',
-				array(
-					'wooniversity-tools-shipping'
-				)
+				'render_shipping_page',
 			)
 		);
+
+	}
+
+	public function render_menu_page() {
+	}
+
+	public function render_shipping_page(){
+
+		$template = dirname( plugin_dir_path( __FILE__ ) ) . '/templates/shipping-menu.php';
+
+		ob_start();
+		include( $template );
+
+		echo ob_get_clean();
+
 
 	}
 
