@@ -10,7 +10,6 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * $scenario_menus - contains required menu data for scenarios
  */
-var_dump( $scenario_menus );
 
 ?>
 
@@ -35,17 +34,31 @@ var_dump( $scenario_menus );
 
         <form method="post" action="options.php">
 
-            <?php if ( 'usps' === $active_tab ) : ?>
+	        <?php foreach ($scenario_menus as $scenario ): ?>
 
-		        <?php settings_fields( 'woocommerce_shipping_usps' ); ?>
-		        <?php do_settings_sections( 'woocommerce-shipping-usps' ); ?>
+            <?php if ( $scenario['tab-slug'] === $active_tab ) : ?>
 
-	        <?php endif; ?>
+		        <?php foreach( $scenario['scenarios'] as $item ): ?>
 
-			<?php if ( 'shipping' === $active_tab ) : ?>
+                    <div class="wrap">
+                        <h3><?php echo $item['title']; ?></h3>
 
-				<?php settings_fields( 'woocommerce_shipping' ); ?>
-				<?php do_settings_sections( 'woocommerce-shipping' ); ?>
+                    <div id="<?php echo $item['id']; ?>-prompt" style="display: none;">
+                        <p>
+		                    <?php echo $item['prompt']; ?>
+                        </p>
+                    </div>
+
+                    <a id="<?php echo $item['id']; ?>" data-wooni-action="<?php echo $item['action']; ?>" href="" class="wooni-scenario-action">Do scenario</a>
+
+                <?php endforeach; ?>
+
+	        <?php endif;
+            endforeach;
+
+			if ( 'shipping' === $active_tab ) : ?>
+
+				<?php do_settings_sections( 'wooniversity-tools-shipping' ); ?>
 
 			<?php endif; ?>
 

@@ -68,9 +68,36 @@ class Wooniversity_Tools {
 
 	public function __construct() {
 
+	   $this->load_assets();
+
 		add_action( 'admin_menu', array( 'Wooni\Menu', 'init' ) );
 		add_action( 'admin_notices', array( $this, 'check_plugins' ) );
 
+	}
+
+	/**
+	 * Losd scripts and CSS
+	 */
+	public function load_assets(){
+
+		wp_register_script('wooni-tools',
+			plugin_dir_url(__FILE__ ) . 'assets/wooni-tools.js',
+			array('jquery' ),
+			filemtime(plugin_dir_path(__FILE__ ) . 'assets/wooni-tools.js'),
+			true
+		);
+
+		wp_localize_script(
+		        'wooni-tools',
+                'wooniAjax',
+                array(
+                        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                        'security' => wp_create_nonce("wooniversity_tools")
+                )
+        );
+
+		wp_enqueue_script('jquery');
+		wp_enqueue_script('wooni-tools');
 	}
 
 	/**
@@ -91,12 +118,25 @@ class Wooniversity_Tools {
 	public function check_plugins() {
 
 		$wooni_plugins = apply_filters('add_wooni_plugins', $this->wooni_plugins );
+		$current_action = $this->get_current_action();
 
 		?>
 
-		<div class="notice notice-error error-alt">
-			<p>Your are running Wooniversity Tools. Remember to deactivate when you are finished</p>
-		</div>
+		<?php if( $current_action ): ?>
+
+            <div class="notice notice-error error-alt">
+                <p>Your are running a Wooniversity Tools Scenario. Something on your site is broken until you fix it (todo current action title:,<?php echo $current_action; ?>)</p>
+            </div>
+
+
+		<?php else: ?>
+
+		    <div class="notice notice-error error-alt">
+			    <p>Your are running Wooniversity Tools. No scenarios are in play. Remember to deactivate when you are finished</p>
+		    </div>
+
+        <?php endif; ?>
+
 
         <?php foreach( $wooni_plugins as $plugin ): ?>
 
@@ -109,6 +149,27 @@ class Wooniversity_Tools {
 			<?php endif;
         endforeach;
 
+	}
+
+	/**
+     * Register which action is currently running
+     *
+	 * @param $action
+	 */
+	public function register_current_action( $action ){
+	    update_option( 'woonitools_running_action', $action );
+	}
+
+	/**
+     * Check if a Wooni Tools action is currently running
+     * todo grab current action data
+     *
+	 * @return false|mixed|void
+	 */
+	public function get_current_action(){
+
+	    $current_action = get_option( 'woonitools_running_action', false );
+	    return $current_action;
 	}
 
 }
