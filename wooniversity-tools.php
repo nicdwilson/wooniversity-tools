@@ -68,8 +68,6 @@ class Wooniversity_Tools {
 
 	public function __construct() {
 
-	    $this->wooni_plugins = apply_filters('add_wooni_plugins', $this->wooni_plugins );
-
 		add_action( 'admin_menu', array( 'Wooni\Menu', 'init' ) );
 		add_action( 'admin_notices', array( $this, 'check_plugins' ) );
 
@@ -91,13 +89,16 @@ class Wooniversity_Tools {
 	 * Add an admin warning if Facebook for WooCommerce is active
 	 */
 	public function check_plugins() {
+
+		$wooni_plugins = apply_filters('add_wooni_plugins', $this->wooni_plugins );
+
 		?>
 
 		<div class="notice notice-error error-alt">
 			<p>Your are running Wooniversity Tools. Remember to deactivate when you are finished</p>
 		</div>
 
-        <?php foreach( $this->wooni_plugins as $plugin ): ?>
+        <?php foreach( $wooni_plugins as $plugin ): ?>
 
 			<?php if ( ! is_plugin_active( $plugin['folder'] . '/' . $plugin['file'] ) ): ?>
 

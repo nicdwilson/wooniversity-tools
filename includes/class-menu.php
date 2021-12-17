@@ -35,8 +35,6 @@ class Menu {
 	/* when the class is constructed. */
 	public function __construct() {
 
-
-
 		$this->add_menu_page();
 		$this->add_shipping_submenu_page();
 
@@ -86,7 +84,7 @@ class Menu {
 	public function render_shipping_page(){
 
 		$template = dirname( plugin_dir_path( __FILE__ ) ) . '/templates/shipping-menu.php';
-		$scenario_menus = apply_filters( 'add_scenario_menus', $this->scenario_menus );
+		$scenario_menus = apply_filters( 'add_shipping_scenario_menus', $this->scenario_menus );
 
 		ob_start();
 		include( $template );
