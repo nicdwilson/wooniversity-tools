@@ -1,12 +1,17 @@
 <?php
-/*
-Plugin name: Wooniversity Tools
-Plugin URI: https://wwwocommerce.com
-Description: Break your WooCommerce - and learn to fix it
-Author: nicw
-Version: 1.1
-Author URI:
-*/
+/**
+ * Plugin Name: Wooniversity Tools
+ * Plugin URI: https://wooniversity.wordpress.com/
+ * Description: Proof of concept training tool
+ * Version: 1.0.0
+ * Author: nicw
+ * Author URI: https://woocommerce.com
+ * Text Domain: wooniversity
+ * Requires at least: 5.6
+ * Requires PHP: 7.0
+ *
+ * @package WooCommerce
+ */
 
 namespace Wooni;
 
