@@ -10,16 +10,13 @@ Author URI:
 
 namespace Wooni;
 
+use Wooni\Wooniversity_Tools;
+
 /**
  * Class Menu
  * @package Wooni
  */
 class Menu {
-
-	/**
-	 * @var array
-	 */
-	public $scenario_menus = array();
 
 	protected static $instance = null;
 
@@ -37,13 +34,16 @@ class Menu {
 
 		$this->add_menu_page();
 		$this->add_shipping_submenu_page();
+		$tools = Wooniversity_Tools::init();
+		$tools->register_tools( 'wooniversity-tools-shipping' );
+
 
 	}
 
 	/**
 	 * Add the main Wooniversity Tools page
 	 */
-	public function add_menu_page(){
+	public function add_menu_page() {
 
 		add_menu_page(
 			'Wooniversity Tools',
@@ -60,8 +60,8 @@ class Menu {
 	}
 
 	/**
-	* Add the page to the tools menu
-	*/
+	 * Add the page to the tools menu
+	 */
 	public function add_shipping_submenu_page() {
 
 		add_submenu_page(
@@ -81,10 +81,10 @@ class Menu {
 	public function render_menu_page() {
 	}
 
-	public function render_shipping_page(){
+	public function render_shipping_page() {
 
-		$template = dirname( plugin_dir_path( __FILE__ ) ) . '/templates/shipping-menu.php';
-		$scenario_menus = apply_filters( 'add_shipping_scenario_menus', $this->scenario_menus );
+		$template       = dirname( plugin_dir_path( __FILE__ ) ) . '/templates/shipping-menu.php';
+		$scenario_menus = apply_filters( 'add_scenario_menus', array() );
 
 		ob_start();
 		include( $template );
